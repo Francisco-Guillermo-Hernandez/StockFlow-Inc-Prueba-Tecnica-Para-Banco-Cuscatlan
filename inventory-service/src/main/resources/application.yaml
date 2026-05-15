@@ -1,3 +1,9 @@
+server:
+  port: ${SERVER_PORT:3030}
+  servlet:
+      context-path: /api/v1
+
+
 spring:
   application:
     name: Prueba-tecnica
