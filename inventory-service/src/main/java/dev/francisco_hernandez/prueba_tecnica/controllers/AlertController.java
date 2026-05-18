@@ -6,10 +6,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/alerts")
-class AlertController {
+public class AlertController {
 
-    @GetMapping
+    @GetMapping("/")
     public String listAlerts() {
+        return "hello world";
+    }
+
+    @GetMapping("/events")
+    public String events() {
         return "hello world";
     }
 }
