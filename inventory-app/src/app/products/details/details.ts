@@ -1,25 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../../environments/environment';
-
-type Product = {
-  id?: number,
-  sku: string,
-  name: string,
-  description: string,
-  currentStock: number,
-  minStock: number,
-  unitPrice: number
-  weight: number,
-  active: boolean,
-  createdAt?: string,
-  updatedAt?: string
-}
+import { Product } from '~/types/product';
+import { Products } from '~/services/products';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './details.html',
   styleUrl: './details.css',
 })
@@ -28,17 +16,18 @@ export class Details implements OnInit {
   loading = true;
   error: any = null;
 
+  constructor(private readonly productsService: Products) {}
+
   ngOnInit(): void {
-    fetch(environment.ENDPOINT + 'products/')
-      .then((res) => {
-        if (!res.ok) throw new Error('Network response was not ok: ' + res.status);
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-        this.products = Array.isArray(data) ? data : data?.items ?? [];
-      })
-      .catch((err) => (this.error = err))
-      .finally(() => (this.loading = false));
+    this.productsService.listAll().subscribe({
+      next: (data) => {
+        this.products = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        this.error = err;
+        this.loading = false;
+      },
+    });
   }
 }

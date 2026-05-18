@@ -1,5 +1,22 @@
-<a [routerLink]="['/products']">Productos</a>
-<a routerLink="/movements">Movimientos</a>
-<a routerLink="/alerts">Alertas</a>
+<div class="min-h-screen bg-muted text-slate-900">
+  <div class="flex min-h-screen">
+    <aside class="w-72 bg-background border-r border-border p-6">
+      <div class="mb-8 text-xl font-semibold text-teal-50">Inventory</div>
+      <nav class="space-y-2">
+        <a routerLink="/products" class="block rounded-lg px-4 py-3 text-foreground hover:bg-slate-100 hover:text-slate-900">
+          Productos
+        </a>
+        <a routerLink="/movements" class="block rounded-lg px-4 py-3 text-foreground hover:bg-slate-100 hover:text-slate-900">
+          Movimientos
+        </a>
+        <a routerLink="/alerts" class="block rounded-lg px-4 py-3 text-foreground hover:bg-slate-100 hover:text-slate-900">
+          Alertas
+        </a>
+      </nav>
+    </aside>
 
-<router-outlet></router-outlet>
+    <main class="flex-1 p-6">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

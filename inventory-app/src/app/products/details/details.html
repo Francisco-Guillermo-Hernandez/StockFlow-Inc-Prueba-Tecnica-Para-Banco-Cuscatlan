@@ -1,3 +1,15 @@
+<h2 class="text-2xl/7 font-bold text-white sm:truncate sm:text-3xl sm:tracking-tight pb-4">Productos</h2>
+
+<a routerLink="/products/register" class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 transition hover:bg-orange-400 mb-5">
+<span>
+  <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="icon">
+          <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z"></path>
+        </svg>
+</span>
+  Registre un nuevo producto
+</a>
+
+
 @if (loading) {
   <div class="p-4">Cargando los productos ...</div>
 }
@@ -21,7 +33,7 @@
           <th class="px-4 py-2 text-right text-sm font-medium text-foreground">Stock</th>
           <th class="px-4 py-2 text-right text-sm font-medium text-foreground">Min</th>
           <th class="px-4 py-2 text-right text-sm font-medium text-foreground">Precio</th>
-          <th class="px-4 py-2 text-center text-sm font-medium text-foreground">Activo?</th>
+          <th class="px-4 py-2 text-center text-sm font-medium text-foreground">Estado?</th>
         </tr>
       </thead>
       <tbody class="bg-card divide-y divide-border">
@@ -34,9 +46,11 @@
             <td class="px-4 py-2 text-sm text-foreground text-right">{{ p.minStock }}</td>
             <td class="px-4 py-2 text-sm text-foreground text-right">${{ p.unitPrice }}</td>
             <td class="px-4 py-2 text-sm text-center">
-              <span [class.text-green-600]="p.active" [class.text-gray-400]="!p.active">
-                {{ p.active ? 'Si' : 'No' }}
-              </span>
+              @if(p.active) {
+                <span class="state-badge-success">Activo</span>
+              } @else {
+              <span class="state-badge-error">Inactivo</span>
+              }
             </td>
           </tr>
         }
