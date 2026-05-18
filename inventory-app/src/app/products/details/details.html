@@ -1,0 +1,46 @@
+@if (loading) {
+  <div class="p-4">Cargando los productos ...</div>
+}
+
+@if (error) {
+  <div class="p-4 text-red-600">Error: {{ error?.message || error }}</div>
+}
+
+@if (!loading && products.length === 0) {
+  <div class="p-4">No se encontraron productos .</div>
+}
+
+@if (products.length) {
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y bg-sidebar-accent table-auto">
+      <thead class="bg-muted">
+        <tr>
+          <th class="px-4 py-2 text-left text-sm font-medium text-foreground">SKU</th>
+          <th class="px-4 py-2 text-left text-sm font-medium text-foreground">Nombre</th>
+          <th class="px-4 py-2 text-left text-sm font-medium text-foreground">Descripcion</th>
+          <th class="px-4 py-2 text-right text-sm font-medium text-foreground">Stock</th>
+          <th class="px-4 py-2 text-right text-sm font-medium text-foreground">Min</th>
+          <th class="px-4 py-2 text-right text-sm font-medium text-foreground">Precio</th>
+          <th class="px-4 py-2 text-center text-sm font-medium text-foreground">Activo?</th>
+        </tr>
+      </thead>
+      <tbody class="bg-card divide-y divide-border">
+        @for (p of products; track $index) {
+          <tr class="hover:bg-background">
+            <td class="px-4 py-2 text-sm text-foreground">{{ p.sku }}</td>
+            <td class="px-4 py-2 text-sm text-foreground">{{ p.name }}</td>
+            <td class="px-4 py-2 text-sm text-foreground">{{ p.description }}</td>
+            <td class="px-4 py-2 text-sm text-foreground text-right">{{ p.currentStock }}</td>
+            <td class="px-4 py-2 text-sm text-foreground text-right">{{ p.minStock }}</td>
+            <td class="px-4 py-2 text-sm text-foreground text-right">${{ p.unitPrice }}</td>
+            <td class="px-4 py-2 text-sm text-center">
+              <span [class.text-green-600]="p.active" [class.text-gray-400]="!p.active">
+                {{ p.active ? 'Si' : 'No' }}
+              </span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
