@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ErrorResponse> handleBadRequest(BadRequestException ex) {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleBadRequest(MethodArgumentNotValidException ex) {
         ErrorResponse error = new ErrorResponse(
                 ex.getMessage() == null ? "" : ex.getMessage(),
                 HttpStatus.BAD_REQUEST.value(),
@@ -33,5 +33,15 @@ public class GlobalExceptionHandler {
                 System.currentTimeMillis()
         );
         return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(ServerErrorException.class)
+    public ResponseEntity<ErrorResponse> handleServerErrorException(ServerErrorException ex) {
+        ErrorResponse error = new ErrorResponse(
+                ex.getMessage() == null ? "" : ex.getMessage(),
+                500,
+                System.currentTimeMillis()
+        );
+        return ResponseEntity.internalServerError().body(error);
     }
 }
