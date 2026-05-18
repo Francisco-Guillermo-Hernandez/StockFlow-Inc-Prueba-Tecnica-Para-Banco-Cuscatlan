@@ -51,10 +51,4 @@ public class ProductDto {
 
 
     private Boolean active;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-
 }
