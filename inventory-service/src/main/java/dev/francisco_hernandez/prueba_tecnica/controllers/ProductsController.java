@@ -1,29 +1,25 @@
 package dev.francisco_hernandez.prueba_tecnica.controllers;
 
 import dev.francisco_hernandez.prueba_tecnica.entities.Product;
-import dev.francisco_hernandez.prueba_tecnica.exceptions.BadFormatException;
-import dev.francisco_hernandez.prueba_tecnica.exceptions.BadRequestException;
-import dev.francisco_hernandez.prueba_tecnica.exceptions.ResourceNotFoundException;
 import dev.francisco_hernandez.prueba_tecnica.service.ProductService;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
-import dev.francisco_hernandez.prueba_tecnica.configuration.Constants;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
+import  dev.francisco_hernandez.prueba_tecnica.mapper.ProductMapper;
 import java.util.List;
+import dev.francisco_hernandez.prueba_tecnica.dto.ProductDto;
 
 @RestController
 @RequestMapping("/products")
-class ProductsController {
+public class ProductsController {
 
+    private final ProductMapper productMapper;
     private final ProductService service;
-    public ProductsController(ProductService service) {
+
+    public ProductsController(ProductMapper productMapper, ProductService service) {
+        this.productMapper = productMapper;
         this.service = service;
     }
 
-    @GetMapping
+    @GetMapping("/")
     public List<Product> listAll() {
         return service.listAll();
     }
@@ -33,8 +29,18 @@ class ProductsController {
         return service.getProductById(Long.parseLong(id));
     }
 
-    @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-       return service.createProduct(product);
+    @PostMapping("/")
+    public Product createProduct(@RequestBody ProductDto productDto) {
+        Product product = productMapper.toEntity(productDto);
+        return service.createProduct(product);
+    }
+
+    @PatchMapping("/{id}")
+    public Product updateProduct(
+        @PathVariable String id,
+        @RequestBody ProductDto productDto
+    ) {
+        Product product = productMapper.toEntity(productDto);
+        return service.updateProduct(Long.parseLong(id), product);
     }
 }
