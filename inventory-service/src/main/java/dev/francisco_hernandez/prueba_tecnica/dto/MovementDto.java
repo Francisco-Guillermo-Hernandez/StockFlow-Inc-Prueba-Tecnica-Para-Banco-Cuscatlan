@@ -7,23 +7,26 @@ import java.time.LocalDateTime;
 
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class MovementDto {
 
     @NotNull(message = "El Id del producto es requerido")
     private Long productId;
 
-    @NotNull(message = "La cantidad es rrequerida")
-    @Min(value = 0, message = "La cantidad a mover debe de ser mayor a 0")
+    @NotNull(message = "La cantidad es requerida")
     private Integer quantity;
 
    @NotBlank(message = "Por favor ingrese una razon por la cual se hace el movimento")
    @Size(max = 100, min = 10)
-   @Pattern(regexp = "^[a-zA-Z0-9\\-_]+$", message = "SKU puede contener")
     private String reason;
+
+
+   @NotBlank(message = "Se require el nombre de la operacion")
+   private String operationName;
+
 }
