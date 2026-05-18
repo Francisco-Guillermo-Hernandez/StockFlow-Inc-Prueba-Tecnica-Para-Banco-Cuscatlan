@@ -1,7 +1,7 @@
 <div class="space-y-6 rounded-3xl bg-card p-8 shadow-lg">
   <div>
     <h2 class="text-2xl/7 font-bold text-foreground sm:truncate sm:text-3xl sm:tracking-tight">
-      Registre un movimiento
+       {{ mode() === 'create' ? 'Registre': 'Actualize' }}  un movimiento
     </h2>
     <p class="mt-2 text-sm leading-6 text-foreground">
       Cree un nuevo movimiento de inventario usando el validador Zod basado en el DTO Java.
@@ -78,15 +78,15 @@
         @if (submitSuccess) {
           <p class="text-sm font-medium text-emerald-400">Movimiento creado correctamente.</p>
         }
-        @if (submitError) {
-          <p class="text-sm font-medium text-rose-400">{{ submitError }}</p>
+        @if (submitError()) {
+          <p class="text-sm font-medium text-rose-400">{{ submitError() }}</p>
         }
       </div>
       <button
         type="submit"
         class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 transition hover:bg-orange-400"
       >
-        Crear movimiento
+        {{ mode() === 'create' ? 'Registre': 'Actualize' }} el movimiento
       </button>
     </div>
   </form>

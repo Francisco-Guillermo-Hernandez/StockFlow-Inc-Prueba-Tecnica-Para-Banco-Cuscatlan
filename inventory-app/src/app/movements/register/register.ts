@@ -1,5 +1,6 @@
 import { Component, OnInit, Signal, signal, computed } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Movements } from '~/services/movements';
 import { Products } from '~/services/products';
 import { Product } from '~/types/product';
@@ -42,9 +43,9 @@ type Option = {
   styleUrl: './register.css',
 })
 export class Register implements OnInit {
-  form: FormGroup;
-  products = signal<Product[]>([]);
-  options: Option[] = [
+  public form: FormGroup;
+  public products = signal<Product[]>([]);
+  public options: Option[] = [
     {
       name: 'Mover del inventario',
       value: 'out',
@@ -54,15 +55,18 @@ export class Register implements OnInit {
       value: 'in',
     },
   ];
-  validationErrors: Record<string, string> = {};
-  submitError: string | null = null;
-  submitSuccess: boolean = false;
+  public validationErrors: Record<string, string> = {};
+  public submitError  = signal<string | null>(null);
+  public submitSuccess: boolean = false;
+  public mode = signal('create');
+  public productId = signal<string | null>('');
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly movementService: Movements,
     private readonly productService: Products,
     private readonly router: Router,
+    private readonly route: ActivatedRoute,
   ) {
     this.form = this.fb.group({
       productId: ['', Validators.required],
@@ -73,7 +77,24 @@ export class Register implements OnInit {
   }
 
   ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    const fromMode = this.route.snapshot.data['mode'];
+    this.productId.set(id);
+    this.mode.set(fromMode);
+
     this.loadProducts();
+
+    console.info(`from mode ${fromMode}`)
+
+    // if (mode() == 'all') {
+    // }
+
+    if (fromMode === 'edit' && id !== null) {
+      this.getProductDetails(id);
+
+      console.log('byProduct')
+    }
+
   }
 
   private loadProducts(): void {
@@ -83,14 +104,13 @@ export class Register implements OnInit {
       },
       error: (error) => {
         console.error('Error loading products:', error);
-        this.submitError = 'Error al cargar los productos';
+        this.submitError.set('Error al cargar los productos');
       },
     });
   }
 
   public onSubmit(): void {
     this.validationErrors = {};
-    this.submitError = null;
     this.submitSuccess = false;
 
     const formData = {
@@ -150,9 +170,48 @@ export class Register implements OnInit {
           error: (error) => {
             this.submitSuccess = false;
             console.error('Error creating movement:', error);
-            this.submitError = error?.error?.message || 'Error al crear el movimiento';
+            this.submitError.set(this.getErrorMessage(error));
           },
         });
     }
+  }
+
+  private getProductDetails(id: string): void {
+    this.productService.productById(id).subscribe({
+      next: data => {
+        this.form.patchValue({ productId:  data.id})
+      },
+      error: error => {
+        console.error(error);
+      }
+    })
+  }
+
+  private getErrorMessage(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      const body = error.error;
+      if (body && typeof body === 'object' && 'message' in body && typeof (body as any).message === 'string') {
+        return (body as any).message;
+      }
+      if (typeof body === 'string') {
+        try {
+          const parsed = JSON.parse(body);
+          if (parsed && typeof parsed.message === 'string') {
+            return parsed.message;
+          }
+        } catch {
+          return body;
+        }
+      }
+      if (error.message) {
+        return error.message;
+      }
+    }
+
+    if (typeof error === 'object' && error !== null && 'message' in error && typeof (error as any).message === 'string') {
+      return (error as any).message;
+    }
+
+    return 'Error al crear el movimiento';
   }
 }

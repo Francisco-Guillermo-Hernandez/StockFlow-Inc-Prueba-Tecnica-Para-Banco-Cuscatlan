@@ -1,6 +1,8 @@
 export type Movement = {
+  id?: string;
   reason: string;
-  productId: number;
+  productId: string;
   quantity: number;
-  timestamp: string;
+  operationName: string;
+  timestamp?: string;
 }
