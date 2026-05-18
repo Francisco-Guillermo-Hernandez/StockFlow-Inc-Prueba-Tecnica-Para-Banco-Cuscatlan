@@ -10,5 +10,11 @@ export const routes: Routes = [
   {
     path: 'register',
     component: Register,
+    data: { mode: 'create' }
+  },
+  {
+    path: 'update/:id',
+    component: Register,
+    data: { mode: 'update' }
   },
 ]

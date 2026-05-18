@@ -10,19 +10,13 @@
 </a>
 
 
-@if (loading) {
-  <div class="p-4">Cargando los productos ...</div>
-}
+@if (loading()) { <div class="p-4">Cargando los productos ...</div>}
 
-@if (error) {
-  <div class="p-4 text-red-600">Error: {{ error?.message || error }}</div>
-}
+@if (error) { <div class="p-4 text-red-600">Error: {{ error?.message || error }}</div> }
 
-@if (!loading && products.length === 0) {
-  <div class="p-4">No se encontraron productos .</div>
-}
+@if (!loading() && products().length === 0) { <div class="p-4">No se encontraron productos .</div> }
 
-@if (products.length) {
+@if (products().length) {
   <div class="overflow-x-auto">
     <table class="min-w-full divide-y bg-sidebar-accent table-auto">
       <thead class="bg-muted">
@@ -33,11 +27,12 @@
           <th class="px-4 py-2 text-right text-sm font-medium text-foreground">Stock</th>
           <th class="px-4 py-2 text-right text-sm font-medium text-foreground">Min</th>
           <th class="px-4 py-2 text-right text-sm font-medium text-foreground">Precio</th>
-          <th class="px-4 py-2 text-center text-sm font-medium text-foreground">Estado?</th>
+          <th class="px-4 py-2 text-center text-sm font-medium text-foreground">Estado</th>
+          <th class="px-4 py-2 text-center text-sm font-medium text-foreground">Movimientos</th>
         </tr>
       </thead>
       <tbody class="bg-card divide-y divide-border">
-        @for (p of products; track $index) {
+        @for (p of products(); track $index) {
           <tr class="hover:bg-background">
             <td class="px-4 py-2 text-sm text-foreground">{{ p.sku }}</td>
             <td class="px-4 py-2 text-sm text-foreground">{{ p.name }}</td>
@@ -49,8 +44,12 @@
               @if(p.active) {
                 <span class="state-badge-success">Activo</span>
               } @else {
-              <span class="state-badge-error">Inactivo</span>
+                <span class="state-badge-error">Inactivo</span>
               }
+            </td>
+            <td>
+              <a [routerLink]="['/products/', 'update', p.id]" class="text-foreground no-underline hover:underline"> Actualizar</a>
+              <a [routerLink]="['/movements', 'register', p.id]" class="text-foreground no-underline hover:underline"> mover</a>
             </td>
           </tr>
         }

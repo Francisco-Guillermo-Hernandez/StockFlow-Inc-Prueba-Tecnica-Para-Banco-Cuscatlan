@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { z } from 'zod';
 import { Product } from '~/types/product';
 import { Products } from '~/services/products';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 const productSchema = z.object({
   sku: z
@@ -22,7 +23,10 @@ const productSchema = z.object({
     .string()
     .min(4, 'Por favor ingrese una descripcion')
     .max(100, 'El Resumen debe de contener menos de 100 caracteres'),
-  currentStock: z.preprocess(Number, z.number().int().min(2, 'El Stock debe de ser mayor o igual a 1')),
+  currentStock: z.preprocess(
+    Number,
+    z.number().int().min(2, 'El Stock debe de ser mayor o igual a 1'),
+  ),
   minStock: z.preprocess(Number, z.number().int().min(1, 'El Stock debe de ser mayor o igual a 1')),
   unitPrice: z.preprocess(Number, z.number().min(1.01, 'El precio debe de ser mayor a 1.01')),
   weight: z.preprocess(Number, z.number().min(0.001, 'El peso debe de ser mayor a 1')),
@@ -38,17 +42,32 @@ type ProductForm = z.infer<typeof productSchema>;
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
-export class Register {
+export class Register implements OnInit {
   form!: FormGroup;
 
   validationErrors: Record<string, string> = {};
   submitError: string | null = null;
   submitSuccess = false;
+  mode = signal('create');
+
+  productId = signal<string | null>('');
+  formData = signal<Product>({
+    sku: '',
+    name: '',
+    description: '',
+    currentStock: 0,
+    minStock: 0,
+    weight: 0,
+    active: false,
+    unitPrice: 0,
+  });
+  loading = signal<boolean>(false);
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly productsService: Products,
-    private readonly router: Router
+    private readonly router: Router,
+    private route: ActivatedRoute,
   ) {
     this.form = this.fb.group({
       sku: [''],
@@ -60,6 +79,16 @@ export class Register {
       weight: ['0.001'],
       active: [true],
     });
+  }
+
+  public ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    const mode = this.route.snapshot.data['mode'];
+    this.productId.set(id);
+    this.mode.set(mode);
+    if (mode === 'update' && id !== null) {
+      this.getProductDetails(id);
+    }
   }
 
   public onSubmit(): void {
@@ -83,24 +112,53 @@ export class Register {
     const product = result.data as Product;
     product.active ??= true;
 
-    this.productsService.createProduct(product).subscribe({
-      next: () => {
-        this.submitSuccess = true;
-        this.form.reset({
-          sku: '',
-          name: '',
-          description: '',
-          currentStock: '0',
-          minStock: '0',
-          unitPrice: '0.01',
-          weight: '0.001',
-          active: true,
-        });
+    if (this.mode() === 'create') {
+      this.productsService
+      .createProduct(product)
+      .subscribe({
+        next: () => {
+          this.submitSuccess = true;
+          this.form.reset({
+            sku: '',
+            name: '',
+            description: '',
+            currentStock: '0',
+            minStock: '0',
+            unitPrice: '0.01',
+            weight: '0.001',
+            active: true,
+          });
 
-        this.router.navigate(['/products/']);
+          this.router.navigate(['/products/']);
+        },
+        error: err => {
+          this.submitError = err?.message ?? 'Error al crear el producto';
+        },
+      });
+    } else {
+      this.productsService.updateProduct(this.productId() ?? '', product).subscribe({
+        next: data => {
+          this.router.navigate(['/products/']);
+        },
+        error: error => {
+          console.error(error);
+        },
+      });
+    }
+  }
+
+  public getProductDetails(productId: string): void {
+    this.loading.set(true);
+    this.productsService.productById(productId).subscribe({
+      next: data => {
+        this.formData.set(data);
+        this.loading.set(false);
+        console.info('getProductDetails');
+        this.form.patchValue(data);
       },
-      error: (err) => {
-        this.submitError = err?.message ?? 'Error al crear el producto';
+      error: error => {
+        this.loading.set(false);
+        console.error(error);
       },
     });
   }
