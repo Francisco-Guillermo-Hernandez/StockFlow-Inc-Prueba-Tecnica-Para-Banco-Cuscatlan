@@ -20,6 +20,12 @@ export class Movements {
     return this.http.get<Array<Movement>>(`${this.path}${id}`);
   }
 
+  public productHistory(id: number | string): Observable<Array<Movement>> {
+    return this.http.get<Array<Movement>>(`${this.path}${id}/history`);
+  }
+
+
+
   public createProduct(dto: Movement): Observable<Movement> {
     return this.http.post<Movement>(this.path, dto);
   }

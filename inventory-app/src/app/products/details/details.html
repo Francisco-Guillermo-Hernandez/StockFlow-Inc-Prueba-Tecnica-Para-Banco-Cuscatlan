@@ -14,7 +14,7 @@
 
 @if (error) { <div class="p-4 text-red-600">Error: {{ error?.message || error }}</div> }
 
-@if (!loading() && products().length === 0) { <div class="p-4">No se encontraron productos .</div> }
+@if (!loading() && products().length === 0) { <div class="p-4 text-foreground">No se encontraron productos .</div> }
 
 @if (products().length) {
   <div class="overflow-x-auto">

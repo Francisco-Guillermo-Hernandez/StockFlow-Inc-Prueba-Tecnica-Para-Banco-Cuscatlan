@@ -2,9 +2,9 @@
 
 @if (isLoading()) { <app-loader/> }
 
-@if (error) { <div class="p-4 text-red-600">Error: {{ error ??  "" }}</div> }
+@if (error) { <div class="p-4 text-red-600">Error: {{ error  }}</div> }
 
-@if (!isLoading() && alerts().length === 0) { <div class="p-4">No se encontraron alertas .</div> }
+@if (!isLoading() && alerts().length === 0) { <div class="p-4 text-foreground">No se encontraron alertas .</div> }
 
 
 

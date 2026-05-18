@@ -24,7 +24,7 @@
 <!-- @if (error()) { <div class="p-4 text-red-600">Error: {{ error?.message || error }}</div> } -->
 
 @if (!loading() && movements().length === 0) {
-  <div class="p-4">No se encontraron productos .</div>
+  <div class="p-4 text-foreground">No se encontraron productos .</div>
 }
 
 @if (movements().length) {

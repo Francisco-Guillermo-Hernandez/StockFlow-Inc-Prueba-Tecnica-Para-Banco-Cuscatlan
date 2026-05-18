@@ -28,13 +28,17 @@ export class Details implements OnInit {
   public ngOnInit(): void {
 
     const id = this.route.snapshot.paramMap.get('id');
-    const mode = this.route.snapshot.data['mode'];
+    const incomingMode = this.route.snapshot.data['mode'];
     this.productId.set(id);
-    this.mode.set(mode);
+    this.mode.set(incomingMode);
 
-    if (this.mode() === 'all') {
+    console.log(incomingMode)
+
+    if (incomingMode === 'all') {
       this.listAll();
-    } else {
+    }
+
+    if (incomingMode === 'by-product' && this.productId() != null) {
       this.listByProduct();
     }
   }
@@ -55,7 +59,7 @@ export class Details implements OnInit {
 
   public listByProduct(): void {
     this.loading.set(true);
-    this.service.productMovements(this.productId()?? '').subscribe({
+    this.service.productHistory(this.productId()?? '').subscribe({
       next: movements => {
         this.loading.set(false);
         this.movements.set(movements);
