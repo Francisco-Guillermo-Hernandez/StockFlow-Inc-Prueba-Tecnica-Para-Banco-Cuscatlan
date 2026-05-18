@@ -1,15 +1,15 @@
 
 
-INSERT INTO products (sku, name, description, current_stock, min_stock, unit_price, weight, active, created_at, updated_at) 
+INSERT INTO products (sku, name, description, current_stock, min_stock, unit_price, weight, active, created_at, updated_at)
 VALUES ('PROD-001', 'MacBook Pro 16', 'MacBook Pro ARM 64GB ', 50, 5, 1200.00, 4.5, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO products (sku, name, description, current_stock, min_stock, unit_price, weight, active, created_at, updated_at) 
+INSERT INTO products (sku, name, description, current_stock, min_stock, unit_price, weight, active, created_at, updated_at)
 VALUES ('PROD-002', 'Magic Trackpad', 'Magic Trackpad', 200, 20, 25.50, 0.1, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO products (sku, name, description, current_stock, min_stock, unit_price, weight, active, created_at, updated_at) 
+INSERT INTO products (sku, name, description, current_stock, min_stock, unit_price, weight, active, created_at, updated_at)
 VALUES ('PROD-003', 'Mechanical Keyboard', 'Mechanical keyboard with bluetooth', 75, 10, 89.99, 0.8, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO products (sku, name, description, current_stock, min_stock, unit_price, weight, active, created_at, updated_at) 
+INSERT INTO products (sku, name, description, current_stock, min_stock, unit_price, weight, active, created_at, updated_at)
 VALUES ('PROD-004', 'Apple Watch', 'Apple Watch series 4', 150, 15, 450.00, 0.2, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO products (sku, name, description, current_stock, min_stock, unit_price, weight, active, created_at, updated_at)
