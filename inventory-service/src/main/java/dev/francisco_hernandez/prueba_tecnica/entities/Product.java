@@ -21,7 +21,7 @@ public class Product {
     @Column(nullable = false, unique = true)
     private String sku;
 
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     private String name;
 
     @Column(length = 100)
