@@ -1,10 +1,6 @@
 package dev.francisco_hernandez.prueba_tecnica.dto;
 
-
 import jakarta.validation.constraints.*;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

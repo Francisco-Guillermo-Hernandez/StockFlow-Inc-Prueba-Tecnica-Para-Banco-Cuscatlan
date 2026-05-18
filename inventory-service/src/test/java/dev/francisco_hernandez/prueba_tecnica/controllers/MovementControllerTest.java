@@ -49,7 +49,7 @@ public class MovementControllerTest {
         when(movementMapper.toEntity(any(MovementDto.class))).thenReturn(movement);
         when(movementService.createAMovement(any(Movement.class))).thenReturn(movement);
 
-        mockMvc.perform(post("/movements/")
+        mockMvc.perform(post("/movements")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
@@ -81,7 +81,7 @@ public class MovementControllerTest {
 
         when(movementService.listAll()).thenReturn(movements);
 
-        mockMvc.perform(get("/movements/"))
+        mockMvc.perform(get("/movements"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].productId").value(1));
     }
