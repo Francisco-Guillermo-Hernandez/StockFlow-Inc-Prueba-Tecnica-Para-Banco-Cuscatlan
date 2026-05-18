@@ -67,7 +67,7 @@ export class Register implements OnInit {
     private readonly fb: FormBuilder,
     private readonly productsService: Products,
     private readonly router: Router,
-    private route: ActivatedRoute,
+    private readonly route: ActivatedRoute,
   ) {
     this.form = this.fb.group({
       sku: [''],

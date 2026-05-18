@@ -1,1 +1,93 @@
-<h2 class="text-2xl/7 font-bold text-white sm:truncate sm:text-3xl sm:tracking-tight">Registre un movimiento</h2>
+<div class="space-y-6 rounded-3xl bg-card p-8 shadow-lg">
+  <div>
+    <h2 class="text-2xl/7 font-bold text-foreground sm:truncate sm:text-3xl sm:tracking-tight">
+      Registre un movimiento
+    </h2>
+    <p class="mt-2 text-sm leading-6 text-foreground">
+      Cree un nuevo movimiento de inventario usando el validador Zod basado en el DTO Java.
+    </p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+    <div class="grid gap-4 sm:grid-cols-2">
+      <label class="block sm:col-span-2">
+        <span class="text-sm font-medium text-foreground">Producto</span>
+        <select
+          formControlName="productId"
+          class="mt-1 block w-full rounded-xl border border-input bg-input px-3 py-2 text-white shadow-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/50"
+        >
+          <option value="">Seleccione un producto</option>
+          @for (product of products(); track product.id) {
+            <option [value]="product.id">
+              {{ product.name }} (SKU: {{ product.sku }}) stock: {{ product.currentStock }}
+            </option>
+          }
+        </select>
+        @if (validationErrors['productId']) {
+          <span class="mt-1 block text-sm text-rose-400">{{ validationErrors['productId'] }}</span>
+        }
+      </label>
+
+      <label class="block">
+        <span class="text-sm font-medium text-foreground">Cantidad</span>
+        <input
+          formControlName="quantity"
+          type="number"
+          min="1"
+          class="mt-1 block w-full rounded-xl border border-input bg-input px-3 py-2 text-white shadow-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/50"
+        />
+        @if (validationErrors['quantity']) {
+          <span class="mt-1 block text-sm text-rose-400">{{ validationErrors['quantity'] }}</span>
+        }
+      </label>
+
+      <label class="block">
+        <span class="text-sm font-medium text-foreground">Tipo de operacion a realizar</span>
+        <select
+          formControlName="operation"
+          name="operation"
+          id="operation"
+          class="mt-1 block w-full rounded-xl border border-input bg-input px-3 py-2 text-white shadow-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/50"
+        >
+          <option value="">Seleccione una opcion</option>
+          @for (option of options; track option.value) {
+            <option [value]="option.value">{{ option.name }}</option>
+          }
+        </select>
+
+        @if (validationErrors['operation']) {
+          <span class="mt-1 block text-sm text-rose-400">{{ validationErrors['productId'] }}</span>
+        }
+      </label>
+
+      <label class="block sm:col-span-2">
+        <span class="text-sm font-medium text-foreground">Razón del movimiento</span>
+        <textarea
+          formControlName="reason"
+          rows="3"
+          class="mt-1 block w-full rounded-xl border border-input bg-input px-3 py-2 text-white shadow-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/50"
+        ></textarea>
+        @if (validationErrors['reason']) {
+          <span class="mt-1 block text-sm text-rose-400">{{ validationErrors['reason'] }}</span>
+        }
+      </label>
+    </div>
+
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div class="space-y-1">
+        @if (submitSuccess) {
+          <p class="text-sm font-medium text-emerald-400">Movimiento creado correctamente.</p>
+        }
+        @if (submitError) {
+          <p class="text-sm font-medium text-rose-400">{{ submitError }}</p>
+        }
+      </div>
+      <button
+        type="submit"
+        class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 transition hover:bg-orange-400"
+      >
+        Crear movimiento
+      </button>
+    </div>
+  </form>
+</div>

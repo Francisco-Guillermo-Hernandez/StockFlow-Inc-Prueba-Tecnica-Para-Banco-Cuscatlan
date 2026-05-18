@@ -4,12 +4,13 @@ import { Product } from '~/types/product';
 import { Products } from '~/services/products';
 import { RouterLink } from '@angular/router';
 import { signal } from '@angular/core';
+import { Loader } from "~/services/loader/loader";
 
 
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, Loader],
   templateUrl: './details.html',
   styleUrl: './details.css',
 })

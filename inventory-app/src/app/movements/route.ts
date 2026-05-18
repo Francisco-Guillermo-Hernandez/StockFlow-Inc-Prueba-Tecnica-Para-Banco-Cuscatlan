@@ -7,10 +7,22 @@ export const routes: Routes = [
   {
     path: '',
     component: Details,
+    data: { mode: 'all' }
+  },
+  {
+    path: 'by-product/:id',
+    component: Details,
+    data: { mode: 'by-product' }
   },
   {
     path: 'register/:id',
     component: Register,
+    data: { mode: 'edit' }
+  },
+   {
+    path: 'register',
+    component: Register,
+    data: { mode: 'create' }
   },
   {
     path: 'history/:id',

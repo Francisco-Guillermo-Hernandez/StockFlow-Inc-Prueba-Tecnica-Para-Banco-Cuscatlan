@@ -1,7 +1,9 @@
 <div class="space-y-6 rounded-3xl bg-card p-8 shadow-lg">
   <div>
-    <h2 class="text-2xl/7 font-bold text-foreground sm:truncate sm:text-3xl sm:tracking-tight">Registre un producto</h2>
-    <p class="mt-2 text-sm leading-6 text-foreground">Cree un nuevo producto usando el validador Zod basado en el DTO Java.</p>
+    <h2 class="text-2xl/7 font-bold text-foreground sm:truncate sm:text-3xl sm:tracking-tight">{{ mode() === 'create' ? 'Creá' : 'Modificá' }} un producto</h2>
+    <p class="mt-2 text-sm leading-6 text-foreground">
+      {{ mode() === 'create' ? 'Crea un nuevo producto' : 'Modifica un producto existente' }}
+    </p>
   </div>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">

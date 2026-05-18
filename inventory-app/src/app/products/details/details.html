@@ -10,7 +10,7 @@
 </a>
 
 
-@if (loading()) { <div class="p-4">Cargando los productos ...</div>}
+@if (loading()) { <app-loader/> }
 
 @if (error) { <div class="p-4 text-red-600">Error: {{ error?.message || error }}</div> }
 
@@ -28,7 +28,7 @@
           <th class="px-4 py-2 text-right text-sm font-medium text-foreground">Min</th>
           <th class="px-4 py-2 text-right text-sm font-medium text-foreground">Precio</th>
           <th class="px-4 py-2 text-center text-sm font-medium text-foreground">Estado</th>
-          <th class="px-4 py-2 text-center text-sm font-medium text-foreground">Movimientos</th>
+          <th class="px-4 py-2 text-center text-sm font-medium text-foreground">Acciones</th>
         </tr>
       </thead>
       <tbody class="bg-card divide-y divide-border">
@@ -48,8 +48,9 @@
               }
             </td>
             <td>
-              <a [routerLink]="['/products/', 'update', p.id]" class="text-foreground no-underline hover:underline"> Actualizar</a>
-              <a [routerLink]="['/movements', 'register', p.id]" class="text-foreground no-underline hover:underline"> mover</a>
+              <a [routerLink]="['/products/', 'update', p.id]" class="text-foreground no-underline hover:underline mr-1.5"> Actualizar</a>
+              <a [routerLink]="['/movements', 'register', p.id]" class="text-foreground no-underline hover:underline"> Mover</a>
+              <a [routerLink]="['/movements', 'by-product', p.id]" class="text-foreground no-underline hover:underline"> Movimientos</a>
             </td>
           </tr>
         }
