@@ -1,1 +1,32 @@
 <h2 class="text-2xl/7 font-bold text-white sm:truncate sm:text-3xl sm:tracking-tight">Movimientos</h2>
+
+@if (loading()) { <div class="p-4">Cargando los productos ...</div>}
+
+<!-- @if (error()) { <div class="p-4 text-red-600">Error: {{ error?.message || error }}</div> } -->
+
+@if (!loading() && movements().length === 0) { <div class="p-4">No se encontraron productos .</div> }
+
+@if (movements().length) {
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y bg-sidebar-accent table-auto">
+      <thead class="bg-muted">
+        <tr>
+          <th class="px-4 py-2 text-left text-sm font-medium text-foreground">Cantidad</th>
+          <th class="px-4 py-2 text-left text-sm font-medium text-foreground">Rason</th>
+          <th class="px-4 py-2 text-left text-sm font-medium text-foreground">Timestamp</th>
+
+        </tr>
+      </thead>
+      <tbody class="bg-card divide-y divide-border">
+        @for (p of movements(); track $index) {
+          <tr class="hover:bg-background">
+            <td class="px-4 py-2 text-sm text-foreground">{{ p.quantity }}</td>
+            <td class="px-4 py-2 text-sm text-foreground">{{ p.reason }}</td>
+            <td class="px-4 py-2 text-sm text-foreground">{{ p.timestamp }}</td>
+
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
