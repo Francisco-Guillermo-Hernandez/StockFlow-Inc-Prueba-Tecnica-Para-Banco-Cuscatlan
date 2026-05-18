@@ -9,7 +9,6 @@ import org.mapstruct.Mapper;
 public interface MovementMapper {
 
     @org.mapstruct.Mapping(target = "id", ignore = true)
-    @org.mapstruct.Mapping(target = "timestamp", ignore = true)
     Movement toEntity(MovementDto dto);
 
     MovementDto toDto(Movement entity);
