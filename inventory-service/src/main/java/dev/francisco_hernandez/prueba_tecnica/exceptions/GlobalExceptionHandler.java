@@ -14,14 +14,14 @@ public class GlobalExceptionHandler {
         ErrorResponse error = new ErrorResponse(
                 ex.getMessage() == null ? "" : ex.getMessage(),
                 HttpStatus.BAD_REQUEST.value(),
-                System.currentTimeMillis()
+                System.currentTimeMillis(),""
         );
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND.value(), System.currentTimeMillis());
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND.value(), System.currentTimeMillis(), "");
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
@@ -30,9 +30,19 @@ public class GlobalExceptionHandler {
         ErrorResponse error = new ErrorResponse(
                 ex.getMessage() == null ? "" : ex.getMessage(),
                 400,
-                System.currentTimeMillis()
+                System.currentTimeMillis(), ""
         );
         return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(InsufficientStockException.class)
+    public ResponseEntity<ErrorResponse> handleInsufficientException(InsufficientStockException ex) {
+        ErrorResponse error = new ErrorResponse(
+                ex.getMessage() == null ? "" : ex.getMessage(),
+                422,
+                System.currentTimeMillis(), ""
+        );
+        return ResponseEntity.unprocessableEntity().body(error);
     }
 
     @ExceptionHandler(ServerErrorException.class)
@@ -40,7 +50,7 @@ public class GlobalExceptionHandler {
         ErrorResponse error = new ErrorResponse(
                 ex.getMessage() == null ? "" : ex.getMessage(),
                 500,
-                System.currentTimeMillis()
+                System.currentTimeMillis(), ""
         );
         return ResponseEntity.internalServerError().body(error);
     }
