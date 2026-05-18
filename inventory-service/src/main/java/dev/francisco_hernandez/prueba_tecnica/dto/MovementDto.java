@@ -23,8 +23,7 @@ public class MovementDto {
 
    @NotBlank(message = "Por favor ingrese una razon por la cual se hace el movimento")
    @Size(max = 100, min = 10)
-    private String reason;
-
+   private String reason;
 
    @NotBlank(message = "Se require el nombre de la operacion")
    private String operationName;
