@@ -1,1 +1,65 @@
-<p>register works!</p>
+<div class="space-y-6 rounded-3xl bg-card p-8 shadow-lg">
+  <div>
+    <h2 class="text-2xl/7 font-bold text-foreground sm:truncate sm:text-3xl sm:tracking-tight">Registre un producto</h2>
+    <p class="mt-2 text-sm leading-6 text-foreground">Cree un nuevo producto usando el validador Zod basado en el DTO Java.</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+    <div class="grid gap-4 sm:grid-cols-2">
+      <label class="block">
+        <span class="text-sm font-medium text-foreground">SKU</span>
+        <input formControlName="sku" type="text" class="mt-1 block w-full rounded-xl border border-input bg-input px-3 py-2 text-white shadow-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/50" />
+        @if(validationErrors['sku']) { <span class="mt-1 block text-sm text-rose-400">{{ validationErrors['sku'] }}</span> }
+      </label>
+
+      <label class="block">
+        <span class="text-sm font-medium text-foreground">Nombre</span>
+        <input formControlName="name" type="text" class="mt-1 block w-full rounded-xl border border-input bg-input px-3 py-2 text-white shadow-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/50" />
+       @if(validationErrors['name']) { <span class="mt-1 block text-sm text-rose-400">{{ validationErrors['name'] }}</span> }
+      </label>
+
+      <label class="block sm:col-span-2">
+        <span class="text-sm font-medium text-foreground">Descripción</span>
+        <textarea formControlName="description" rows="3" class="mt-1 block w-full rounded-xl border border-input bg-input px-3 py-2 text-white shadow-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/50"></textarea>
+        @if(validationErrors['description']) { <span *ngIf="validationErrors['description']" class="mt-1 block text-sm text-rose-400">{{ validationErrors['description'] }}</span>}
+      </label>
+
+      <label class="block">
+        <span class="text-sm font-medium text-foreground">Stock actual</span>
+        <input formControlName="currentStock" type="number" min="0" class="mt-1 block w-full rounded-xl border border-input bg-input px-3 py-2 text-white shadow-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring" />
+        @if(validationErrors['currentStock']) {<span class="mt-1 block text-sm text-rose-400">{{ validationErrors['currentStock'] }}</span>}
+      </label>
+
+      <label class="block">
+        <span class="text-sm font-medium text-foreground">Stock mínimo</span>
+        <input formControlName="minStock" type="number" min="0" class="mt-1 block w-full rounded-xl border border-input bg-input px-3 py-2 text-white shadow-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring" />
+       @if(validationErrors['minStock']) { <span class="mt-1 block text-sm text-rose-400">{{ validationErrors['minStock'] }}</span>}
+      </label>
+
+      <label class="block">
+        <span class="text-sm font-medium text-foreground">Precio unitario</span>
+        <input formControlName="unitPrice" type="number" step="0.01" min="0.01" class="mt-1 block w-full rounded-xl border border-input bg-input px-3 py-2 text-white shadow-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring" />
+        @if(validationErrors['unitPrice']) {<span  class="mt-1 block text-sm text-rose-400">{{ validationErrors['unitPrice'] }}</span>}
+      </label>
+
+      <label class="block">
+        <span class="text-sm font-medium text-foreground">Peso</span>
+        <input formControlName="weight" type="number" step="0.001" min="0.001" class="mt-1 block w-full rounded-xl border border-input bg-input px-3 py-2 text-white shadow-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring" />
+        @if(validationErrors['weight']) {<span class="mt-1 block text-sm text-rose-400">{{ validationErrors['weight'] }}</span>}
+      </label>
+
+      <label class="flex items-center gap-3 rounded-xl border border-input bg-input px-4 py-3">
+        <input formControlName="active" type="checkbox" class="h-4 w-4 rounded border-slate-500 text-sky-500 focus:ring-ring" />
+        <span class="text-sm text-foreground">Activo</span>
+      </label>
+    </div>
+
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div class="space-y-1">
+        @if(submitSuccess) {<p  class="text-sm font-medium text-emerald-400">Producto creado correctamente.</p>}
+        @if(submitError) { <p  class="text-sm font-medium text-rose-400">{{ submitError }}</p> }
+      </div>
+      <button type="submit" class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 transition hover:bg-orange-400">Crear producto</button>
+    </div>
+  </form>
+</div>
