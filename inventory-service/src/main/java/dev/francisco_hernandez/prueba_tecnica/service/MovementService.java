@@ -35,17 +35,22 @@ public class MovementService implements IMovementService {
     @Override
     public List<Movement> listAllByProductId(Long productId) {
         try {
+            // Validate product existence first
+            productService.getProductById(productId);
+
             List<Movement> movements = repository.findByProductId(productId);
 
             if (movements.isEmpty()) {
-                throw new ResourceNotFoundException("No se encuentran los movimientos con id: " + productId);
+                throw new ResourceNotFoundException("No se encontraron movimientos para el producto con id: " + productId);
             }
 
             return movements;
+        } catch (ResourceNotFoundException ex) {
+            throw ex;
         } catch (DataAccessException e) {
-            throw new MethodArgumentNotValidException("Error al obtener el producto con id: " + e.getMessage());
+            throw new MethodArgumentNotValidException("Error de base de datos al obtener movimientos: " + e.getMessage());
         } catch (Exception ex) {
-            throw new ServerErrorException("Error interno: " +ex.getMessage());
+            throw new ServerErrorException("Error interno: " + ex.getMessage());
         }
     }
 

@@ -45,15 +45,8 @@ public class ProductService implements IProductService  {
 
     @Override
     public Product getProductById(Long id) {
-
-        try {
-            return repository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("No se encuentra el producto con id: " + id));
-        } catch (DataAccessException e) {
-            throw new MethodArgumentNotValidException("Error al obtener el producto con id: " + id);
-        } catch (Exception ex) {
-            throw new ServerErrorException("Error interno: " +ex.getMessage());
-        }
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No se encuentra el producto con id: " + id));
     }
 
     @Override
@@ -86,8 +79,10 @@ public class ProductService implements IProductService  {
 
                 return repository.save(productToUpdate);
             } else {
-                throw new EntityNotFoundException("El product con id " + id + " no fue encontrado");
+                throw new ResourceNotFoundException("El producto con id " + id + " no fue encontrado");
             }
+        } catch (ResourceNotFoundException ex) {
+            throw ex;
         } catch (Exception ex) {
             throw new MethodArgumentNotValidException("Error al actualizar producto: " + ex.getMessage());
         }
@@ -103,9 +98,11 @@ public class ProductService implements IProductService  {
                 productToUpdate.setCurrentStock(productToUpdate.getCurrentStock() + newStock);
                 return repository.save(productToUpdate);
             } else {
-                throw new EntityNotFoundException("El producto con id " + id + " no existe");
+                throw new ResourceNotFoundException("El producto con id " + id + " no existe");
             }
 
+        } catch (ResourceNotFoundException ex) {
+            throw ex;
         } catch (Exception ex) {
             throw new MethodArgumentNotValidException("Error al actualizar producto: " + ex.getMessage());
         }
